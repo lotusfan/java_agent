@@ -23,3 +23,5 @@
 |com.general.MainTest#main                                                                           | 9018ms ≈9s
 |-----------------------------------------------------------------------------------------------------------------------------
 ```
+### general model
+> java -javaagent:/--path--/logEnhance-jar-with-dependencies.jar=/--path--/time.txt,com/general,1 -jar general-1.0-SNAPSHOT.jar
