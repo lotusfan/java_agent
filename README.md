@@ -25,3 +25,5 @@
 ```
 ### general model
 > java -javaagent:/--path--/logEnhance-jar-with-dependencies.jar=/--path--/time.txt,com/general,1 -jar general-1.0-SNAPSHOT.jar
+#### 可以通过sort来排序查看
+>  grep "54C6B5D5952C458C8599F3F482321CEF" time.txt | sort -n -t"|" -k3
