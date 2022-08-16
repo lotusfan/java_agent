@@ -33,7 +33,7 @@ public class PreMainAgent {
             }
             inst.addTransformer(new DefineTransformer().setKeyword(split[1]), true);
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 
