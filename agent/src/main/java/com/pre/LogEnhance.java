@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.LinkedList;
+import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -22,6 +23,7 @@ public class LogEnhance {
     public static ThreadLocal<LogEnhance> logEnhanceThreadLocal = ThreadLocal.withInitial(() -> new LogEnhance().init());
     public static int methodNameColumnLength = 100;
     public static int timeColumnLength = 25;
+    public static int uniqueKeyColumnLength = 35;
     public static long greaterMS = -1;
     public static long threeSeconds = 3 * 1000;
     public static long threeMinutes = 3 * 60 * 1000;
@@ -29,11 +31,13 @@ public class LogEnhance {
     LinkedList<Long> point;
     File file;
     BufferedWriter bw;
+    String uniqueKey;
 
     public LogEnhance init() {
 
         file = new File(filePath);
         point = new LinkedList<>();
+        uniqueKey = UUID.randomUUID().toString().replace("-", "").toUpperCase();
         try {
             if (!file.exists()) {
                 file.createNewFile();
@@ -66,7 +70,7 @@ public class LogEnhance {
         StackTraceElement ste = Thread.currentThread().getStackTrace()[2];
         int j = point.size();
         try {
-            bw.append(tableLine(new StringBuffer(), ste.getClassName() + "#" + ste.getMethodName(), elapsed));
+            bw.append(tableLine(new StringBuffer(), ste.getClassName() + "#" + ste.getMethodName(), elapsed, uniqueKey));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -82,7 +86,7 @@ public class LogEnhance {
         }
     }
 
-    public static StringBuffer tableLine(StringBuffer sb, String methodName, Long elapsedTime) {
+    public static StringBuffer tableLine(StringBuffer sb, String methodName, Long elapsedTime, String uniqueKey) {
 
         sb.append("\n|");
         int ml = methodName.length();
@@ -106,6 +110,14 @@ public class LogEnhance {
             sb.append(elapsedTime / 60 / 1000);
             sb.append("m");
         }
+
+        int tl = methodNameColumnLength + timeColumnLength;
+        for (int i = sb.length(); i < tl; i++) {
+            sb.append(" ");
+        }
+        sb.append("| ");
+        sb.append(uniqueKey);
+
         return sb;
     }
 
@@ -120,7 +132,7 @@ public class LogEnhance {
         sb.append("\n|");
         sb.append(
                 Stream.generate(() -> "-")
-                        .limit(methodNameColumnLength + timeColumnLength)
+                        .limit(methodNameColumnLength + timeColumnLength + uniqueKeyColumnLength)
                         .collect(Collectors.joining()));
 
         return sb;
