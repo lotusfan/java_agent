@@ -2,7 +2,7 @@
 日志打印
 ### 使用
 
-> java -javaagent:{agent_jar_path}/{agent_jar.jar}={log_path}/{log_file},{keyword},{min_time_ms} -jar {target.jar}
+> java -javaagent:{agent_jar_path}/{agent_jar.jar}={log_path}/{log_file},{keyword},{min_time_ms} -noverify -jar {target.jar}
 
 |parameter|required|description|
 | --- | --- | --- |
